@@ -63,4 +63,9 @@ class CategoriesTable extends Table
 
         return $validator;
     }
+
+    public function getAll()
+    {
+        return $this->find();
+    }
 }

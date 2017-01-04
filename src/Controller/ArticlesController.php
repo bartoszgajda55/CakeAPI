@@ -10,6 +10,11 @@ use App\Controller\AppController;
  */
 class ArticlesController extends AppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+        $this->autoRender = false;
+    }
 
     /**
      * Index method
@@ -18,13 +23,7 @@ class ArticlesController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Users', 'Categories']
-        ];
-        $articles = $this->paginate($this->Articles);
-
-        $this->set(compact('articles'));
-        $this->set('_serialize', ['articles']);
+        echo json_encode($this->Articles->getAll());
     }
 
     /**
@@ -36,12 +35,7 @@ class ArticlesController extends AppController
      */
     public function view($id = null)
     {
-        $article = $this->Articles->get($id, [
-            'contain' => ['Users', 'Categories']
-        ]);
 
-        $this->set('article', $article);
-        $this->set('_serialize', ['article']);
     }
 
     /**
@@ -51,21 +45,7 @@ class ArticlesController extends AppController
      */
     public function add()
     {
-        $article = $this->Articles->newEntity();
-        if ($this->request->is('post')) {
-            $article = $this->Articles->patchEntity($article, $this->request->data);
-            if ($this->Articles->save($article)) {
-                $this->Flash->success(__('The article has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The article could not be saved. Please, try again.'));
-            }
-        }
-        $users = $this->Articles->Users->find('list', ['limit' => 200]);
-        $categories = $this->Articles->Categories->find('list', ['limit' => 200]);
-        $this->set(compact('article', 'users', 'categories'));
-        $this->set('_serialize', ['article']);
     }
 
     /**
@@ -77,23 +57,7 @@ class ArticlesController extends AppController
      */
     public function edit($id = null)
     {
-        $article = $this->Articles->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $article = $this->Articles->patchEntity($article, $this->request->data);
-            if ($this->Articles->save($article)) {
-                $this->Flash->success(__('The article has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The article could not be saved. Please, try again.'));
-            }
-        }
-        $users = $this->Articles->Users->find('list', ['limit' => 200]);
-        $categories = $this->Articles->Categories->find('list', ['limit' => 200]);
-        $this->set(compact('article', 'users', 'categories'));
-        $this->set('_serialize', ['article']);
     }
 
     /**
@@ -105,14 +69,6 @@ class ArticlesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $article = $this->Articles->get($id);
-        if ($this->Articles->delete($article)) {
-            $this->Flash->success(__('The article has been deleted.'));
-        } else {
-            $this->Flash->error(__('The article could not be deleted. Please, try again.'));
-        }
 
-        return $this->redirect(['action' => 'index']);
     }
 }

@@ -88,4 +88,9 @@ class ArticlesTable extends Table
 
         return $rules;
     }
+
+    public function getAll()
+    {
+        return $this->find();
+    }
 }
