@@ -14,6 +14,14 @@ class ArticlesController extends AppController
     {
         parent::initialize();
         $this->autoRender = false;
+        $this->response->cors($this->request)
+            ->allowOrigin(['*'])
+            ->allowMethods(['GET', 'POST'])
+            ->allowHeaders(['X-CSRF-Token'])
+            ->allowCredentials()
+            ->exposeHeaders(['Link'])
+            ->maxAge(300)
+            ->build();
     }
 
     /**
@@ -23,7 +31,12 @@ class ArticlesController extends AppController
      */
     public function index()
     {
-        echo json_encode($this->Articles->getAll());
+        $this->response->body(json_encode($this->Articles->getAll()));
+        $this->response->statusCode(200);
+        $this->response->type('application/json');
+
+        return $this->response;
+
     }
 
     /**

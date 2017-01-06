@@ -23,7 +23,11 @@ class CategoriesController extends AppController
      */
     public function index()
     {
-        echo json_encode($this->Categories->getAll());
+        $this->response->body(json_encode($this->Categories->getAll()));
+        $this->response->statusCode(200);
+        $this->response->type('application/json');
+
+        return $this->response;
     }
 
     /**
