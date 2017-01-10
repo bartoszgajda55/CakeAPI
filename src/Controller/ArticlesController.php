@@ -16,11 +16,7 @@ class ArticlesController extends AppController
         $this->autoRender = false;
         $this->response->cors($this->request)
             ->allowOrigin(['*'])
-            ->allowMethods(['GET', 'POST'])
-            ->allowHeaders(['X-CSRF-Token'])
-            ->allowCredentials()
-            ->exposeHeaders(['Link'])
-            ->maxAge(300)
+            ->allowMethods(['GET', 'POST', 'PUT', 'DELETE'])
             ->build();
     }
 
