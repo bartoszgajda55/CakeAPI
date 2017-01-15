@@ -14,6 +14,10 @@ class UsersController extends AppController
     {
         parent::initialize();
         $this->autoRender = false;
+        $this->response->cors($this->request)
+            ->allowOrigin(['*'])
+            ->allowMethods(['GET', 'POST', 'PUT', 'DELETE'])
+            ->build();
     }
 
     /**
@@ -23,15 +27,20 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $this->response->body(json_encode($this->Users->getAll()));
-        $this->response->statusCode(200);
-        $this->response->type('application/json');
-
-        return $this->response;
+        if($this->request->is(['GET'])) {
+            echo 'index';
+        } else if ($this->request->is(['POST'])) {
+            $this->add($this->request->data);
+        } else if ($this->request->is(['PUT'])) {
+            $this->edit($this->request->data);
+        } else if ($this->request->is(['DELETE'])) {
+            $this->delete($this->request->data);
+        }
     }
 
     /**
      * View method
+     * Used to log in users
      *
      * @param string|null $id User id.
      * @return \Cake\Network\Response|null
@@ -39,7 +48,8 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-
+        echo "view:";
+        echo json_encode($this->request->data);
     }
 
     /**
@@ -49,7 +59,7 @@ class UsersController extends AppController
      */
     public function add()
     {
-
+        echo 'add';
     }
 
     /**
@@ -61,7 +71,8 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-
+        echo 'edit:';
+        echo json_encode($this->request->data);
     }
 
     /**
@@ -73,6 +84,7 @@ class UsersController extends AppController
      */
     public function delete($id = null)
     {
-
+        echo 'delete:';
+        echo json_encode($this->request->data);
     }
 }

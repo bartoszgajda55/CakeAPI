@@ -76,25 +76,24 @@ Router::scope('/', function (RouteBuilder $routes) {
 });
 
 /**
+ * REST Routes
+ */
+Router::scope('/articles', function (RouteBuilder $routes) {
+    $routes->resources('Articles');
+});
+
+Router::scope('/users', function (RouteBuilder $routes) {
+    $routes->resources('Users');
+});
+
+Router::scope('/categories', function (RouteBuilder $routes) {
+    $routes->resources('Categories');
+});
+
+/**
  * Load all plugin routes.  See the Plugin documentation on
  * how to customize the loading of plugin routes.
  */
 Plugin::routes();
 
-/**
- * REST Routes
- */
-Router::scope('/articles', function ($routes) {
-    $routes->extensions(['json']);
-    $routes->resources('Articles');
-});
 
-Router::scope('/users', function ($routes) {
-    $routes->extensions(['json']);
-    $routes->resources('Users');
-});
-
-Router::scope('/categories', function ($routes) {
-    $routes->extensions(['json']);
-    $routes->resources('Categories');
-});
