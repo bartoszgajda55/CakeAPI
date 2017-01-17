@@ -27,15 +27,7 @@ class UsersController extends AppController
      */
     public function index()
     {
-        if($this->request->is(['GET'])) {
-            echo 'index';
-        } else if ($this->request->is(['POST'])) {
-            $this->add($this->request->data);
-        } else if ($this->request->is(['PUT'])) {
-            $this->edit($this->request->data);
-        } else if ($this->request->is(['DELETE'])) {
-            $this->delete($this->request->data);
-        }
+        echo 'index';
     }
 
     /**

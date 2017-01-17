@@ -44,6 +44,10 @@ use Cake\Routing\Route\DashedRoute;
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
+    $routes->extensions(['json']);
+    $routes->resources('Articles');
+    $routes->resources('Users');
+    $routes->resources('Categories');
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
      * its action called 'display', and we pass a param to select the view file
@@ -73,21 +77,6 @@ Router::scope('/', function (RouteBuilder $routes) {
      * routes you want in your application.
      */
     $routes->fallbacks(DashedRoute::class);
-});
-
-/**
- * REST Routes
- */
-Router::scope('/articles', function (RouteBuilder $routes) {
-    $routes->resources('Articles');
-});
-
-Router::scope('/users', function (RouteBuilder $routes) {
-    $routes->resources('Users');
-});
-
-Router::scope('/categories', function (RouteBuilder $routes) {
-    $routes->resources('Categories');
 });
 
 /**
