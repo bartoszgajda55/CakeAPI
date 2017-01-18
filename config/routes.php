@@ -44,6 +44,9 @@ use Cake\Routing\Route\DashedRoute;
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
+    /**
+     * REST Routes Configuration
+     */
     $routes->extensions(['json']);
     $routes->resources('Articles');
     $routes->resources('Users');

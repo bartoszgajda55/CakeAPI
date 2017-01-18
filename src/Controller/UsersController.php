@@ -47,11 +47,21 @@ class UsersController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Network\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
-        echo 'add';
+        $data = $this->request->data;
+        if($this->Users->logIn($data)) {
+            $this->response->body(json_encode(['status' => 'logged']));
+            $this->response->statusCode(200);
+            $this->response->type('application/json');
+        } else {
+            $this->response->body(json_encode(['status' => 'error']));
+            $this->response->statusCode(200);
+            $this->response->type('application/json');
+        }
+        return $this->response;
     }
 
     /**
