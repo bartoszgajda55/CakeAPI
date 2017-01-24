@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Utility\Security;
+use Firebase\JWT\JWT;
 
 /**
  * Users Controller
@@ -19,6 +21,7 @@ class UsersController extends AppController
             ->allowMethods(['GET', 'POST', 'PUT', 'DELETE'])
             ->allowHeaders(['Content-Type'])
             ->build();
+        $this->Auth->allow(['register', 'token']);
     }
 
     /**
@@ -52,7 +55,40 @@ class UsersController extends AppController
      */
     public function register()
     {
-        echo 'register';
+        $data = $this->request->data;
+        $result = $this->Users->createUser($data);
+        if ($result[0]) {
+            $this->response->body(json_encode([
+                'success' => 'true',
+                'id' => $result[1],
+                'token' => JWT::encode(
+                    [
+                        'sub' => $result[1],
+                        'exp' => time() + 604800
+                    ],
+                    Security::salt()
+                )
+            ]));
+            $this->response->statusCode(201);
+            $this->response->type('application/json');
+        } else {
+            $this->response->body(json_encode([
+                'success' => 'false'
+            ]));
+            $this->response->statusCode(400);
+            $this->response->type('application/json');
+        }
+        $this->response->send();
+    }
+
+    /**
+     * Token method
+     *
+     * @return \Cake\Network\Response|null Returns JWT token if logged successfully
+     */
+    public function token()
+    {
+        echo 'token';
     }
 
     /**
@@ -63,7 +99,7 @@ class UsersController extends AppController
     public function add()
     {
         $data = $this->request->data;
-        if($this->Users->logIn($data)) {
+        if ($this->Users->logIn($data)) {
             $this->response->body(json_encode(['status' => 'logged']));
             $this->response->statusCode(200);
             $this->response->type('application/json');

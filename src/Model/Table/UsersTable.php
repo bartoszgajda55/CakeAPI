@@ -94,4 +94,14 @@ class UsersTable extends Table
             return false;
         }
     }
+
+    public function createUser($data)
+    {
+        $user = $this->newEntity($data);
+        if($this->save($user)) {
+            return array(true, $user->id);
+        } else {
+            return array(false, '');
+        }
+    }
 }
