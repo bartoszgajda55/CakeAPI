@@ -33,7 +33,10 @@ class UsersController extends AppController
      */
     public function index()
     {
-        echo 'index';
+        $this->response->body(json_encode($this->Users->getAll()));
+        $this->response->statusCode(200);
+        $this->response->type('application/json');
+        return $this->response;
     }
 
     /**
@@ -73,7 +76,7 @@ class UsersController extends AppController
             ]));
             $this->response->statusCode(201);
             $this->response->type('application/json');
-            $this->response->send();
+            return $this->response;
         } else {
             throw new BadRequestException();
         }
@@ -102,7 +105,7 @@ class UsersController extends AppController
             ]));
             $this->response->statusCode(200);
             $this->response->type('application/json');
-            $this->response->send();
+            return $this->response;
         } else {
             throw new UnauthorizedException('Invalid username or password');
         }
@@ -115,17 +118,7 @@ class UsersController extends AppController
      */
     public function add()
     {
-        $data = $this->request->data;
-        if ($this->Users->logIn($data)) {
-            $this->response->body(json_encode(['status' => 'logged']));
-            $this->response->statusCode(200);
-            $this->response->type('application/json');
-        } else {
-            $this->response->body(json_encode(['status' => 'error']));
-            $this->response->statusCode(200);
-            $this->response->type('application/json');
-        }
-        return $this->response;
+        echo 'add';
     }
 
     /**
