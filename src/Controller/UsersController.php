@@ -46,6 +46,16 @@ class UsersController extends AppController
     }
 
     /**
+     * Register method
+     *
+     * @return \Cake\Network\Response|null
+     */
+    public function register()
+    {
+        echo 'register';
+    }
+
+    /**
      * Add method
      *
      * @return \Cake\Network\Response|null Redirects on successful add, renders view otherwise.

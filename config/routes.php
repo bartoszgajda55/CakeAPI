@@ -50,6 +50,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->extensions(['json']);
     $routes->resources('Articles');
     $routes->resources('Users');
+    Router::connect('api/users/register', ['controller' => 'Users', 'action' => 'register', 'prefix' => 'api']);
     $routes->resources('Categories');
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
