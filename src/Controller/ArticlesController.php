@@ -18,6 +18,7 @@ class ArticlesController extends AppController
             ->allowOrigin(['*'])
             ->allowMethods(['GET', 'POST', 'PUT', 'DELETE'])
             ->build();
+        $this->Auth->allow(['index']);
     }
 
     /**

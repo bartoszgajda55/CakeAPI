@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Network\Exception\BadRequestException;
+use Cake\Network\Exception\UnauthorizedException;
 use Cake\Utility\Security;
 use Firebase\JWT\JWT;
 
@@ -71,14 +73,10 @@ class UsersController extends AppController
             ]));
             $this->response->statusCode(201);
             $this->response->type('application/json');
+            $this->response->send();
         } else {
-            $this->response->body(json_encode([
-                'success' => 'false'
-            ]));
-            $this->response->statusCode(400);
-            $this->response->type('application/json');
+            throw new BadRequestException();
         }
-        $this->response->send();
     }
 
     /**
@@ -88,7 +86,26 @@ class UsersController extends AppController
      */
     public function token()
     {
-        echo 'token';
+        $data = $this->request->data;
+        $user = $this->Users->getUser($data);
+        if($user != null) {
+            $this->response->body(json_encode([
+                'success' => 'true',
+                'id' => $user[0]['id'],
+                'token' => JWT::encode(
+                    [
+                        'sub' => $user[0]['id'],
+                        'exp' => time() + 604800
+                    ],
+                    Security::salt()
+                )
+            ]));
+            $this->response->statusCode(200);
+            $this->response->type('application/json');
+            $this->response->send();
+        } else {
+            throw new UnauthorizedException('Invalid username or password');
+        }
     }
 
     /**

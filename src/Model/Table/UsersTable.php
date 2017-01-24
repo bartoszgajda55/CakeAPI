@@ -86,6 +86,11 @@ class UsersTable extends Table
         return $this->find();
     }
 
+    public function getUser($data)
+    {
+        return $this->find()->select('id')->where(['email' => $data['email'], 'password' => $data['password']])->toArray();
+    }
+
     public function logIn($data)
     {
         if($this->find()->select(['password'])->where(['email' => $data['email']])->first()->toArray()['password'] == $data['password']) {
