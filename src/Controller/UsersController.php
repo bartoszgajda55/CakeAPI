@@ -21,7 +21,7 @@ class UsersController extends AppController
         $this->response->cors($this->request)
             ->allowOrigin(['*'])
             ->allowMethods(['GET', 'POST', 'PUT', 'DELETE'])
-            ->allowHeaders(['Content-Type'])
+            ->allowHeaders(['*'])
             ->build();
         $this->Auth->allow(['register', 'token']);
     }
