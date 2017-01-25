@@ -18,12 +18,15 @@ class UsersController extends AppController
     {
         parent::initialize();
         $this->autoRender = false;
-        $this->response->cors($this->request)
-            ->allowOrigin(['*'])
-            ->allowMethods(['GET', 'POST', 'PUT', 'DELETE'])
-            ->allowHeaders(['*'])
-            ->build();
+
         $this->Auth->allow(['register', 'token']);
+
+        $this->response->header('Access-Control-Allow-Origin', '*');
+        //$this->response->header('Access-Control-Allow-Methods','*');
+        //$this->response->header('Access-Control-Allow-Credentials', 'true');
+        //$this->response->header('Access-Control-Allow-Request-Method', '*');
+        $this->response->header('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept, Authorization');
+        $this->response->sendHeaders();
     }
 
     /**
@@ -89,25 +92,27 @@ class UsersController extends AppController
      */
     public function token()
     {
-        $data = $this->request->data;
-        $user = $this->Users->getUser($data);
-        if($user != null) {
-            $this->response->body(json_encode([
-                'success' => 'true',
-                'id' => $user[0]['id'],
-                'token' => JWT::encode(
-                    [
-                        'sub' => $user[0]['id'],
-                        'exp' => time() + 604800
-                    ],
-                    Security::salt()
-                )
-            ]));
-            $this->response->statusCode(200);
-            $this->response->type('application/json');
-            return $this->response;
-        } else {
-            throw new UnauthorizedException('Invalid username or password');
+        if($this->request->is(['POST'])) {
+            $data = $this->request->data;
+            $user = $this->Users->getUser($data);
+            if($user != null) {
+                $this->response->body(json_encode([
+                    'success' => 'true',
+                    'id' => $user[0]['id'],
+                    'token' => JWT::encode(
+                        [
+                            'sub' => $user[0]['id'],
+                            'exp' => time() + 604800
+                        ],
+                        Security::salt()
+                    )
+                ]));
+                $this->response->statusCode(200);
+                $this->response->type('application/json');
+                return $this->response;
+            } else {
+                throw new UnauthorizedException('Invalid username or password');
+            }
         }
     }
 
