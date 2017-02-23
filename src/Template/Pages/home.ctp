@@ -5,6 +5,6 @@
     <title>REST API</title>
 </head>
 <body>
-    <p>Test</p>
+    <p>Azure Deployment Test</p>
 </body>
 </html>
